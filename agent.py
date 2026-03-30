@@ -1,13 +1,11 @@
-from google.adk.agents import Agent
-from google.adk.models import Gemini
+import google.generativeai as genai
+import os
 
-model = Gemini(model="gemini-pro")
+genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
-def summarize_tool(text: str):
+model = genai.GenerativeModel("gemini-pro")
+
+def agent(text: str):
     prompt = f"Summarize this text in short:\n{text}"
-    return prompt
-
-agent = Agent(
-    model=model,
-    tools=[summarize_tool],
-)
+    response = model.generate_content(prompt)
+    return response.text
